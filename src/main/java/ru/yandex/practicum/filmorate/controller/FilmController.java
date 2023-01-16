@@ -15,7 +15,7 @@ import java.util.Set;
 @RequestMapping("/films")
 public class FilmController {
 
-    private int id = 0;
+    private int id = 1;
     Set<Film> films = new HashSet<>();
 
     @GetMapping
