@@ -18,9 +18,7 @@ import java.util.Set;
 public class UserController {
 
     private int id = 0;
-    Set<User> users = new HashSet<>(Set.of(new User(id++, "testemail@gmail.com", "testLogin", "testName", LocalDate.now())));
-
-
+    Set<User> users = new HashSet<>();
     @GetMapping
     public Set<User> getFilms() {
         log.info("Получен запрос на получение списка фильмов: {}", users.toString());
