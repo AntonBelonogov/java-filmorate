@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validator.UserValidator;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,20 +26,23 @@ public class UserController {
 
     @PostMapping
     public User addFilm(@Valid @RequestBody User user) {
-        user.setId(id++);
         if(UserValidator.userCheck(user)) {
+            user.setId(id++);
             users.add(user);
-            log.info("Пользователь добавлен email: {}", user.getEmail());
+            log.info("Пользователь добавлен email: {}", user);
         }
         return user;
     }
 
     @PutMapping
     public User updateFilm(@Valid @RequestBody User user) {
+        if (!users.contains(user)) {
+            throw new ValidationException("Такого пользователя нет");
+        }
         if (UserValidator.userCheck(user)) {
             users.remove(user);
             users.add(user);
-            log.info("Пользователь обнавлен email: {}", user.getEmail());
+            log.info("Пользователь обнавлен email: {}", user);
         }
         return user;
     }

@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,8 +26,8 @@ public class FilmController {
 
     @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) {
-        film.setId(id++);
         if (FilmValidator.filmCheck(film)) {
+            film.setId(id++);
             films.add(film);
             log.info("Фильм добавлен название: {}", film.getName());
         }
@@ -35,6 +36,9 @@ public class FilmController {
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
+        if (!films.contains(film)) {
+            throw new ValidationException("Такой записи нет");
+        }
         if (FilmValidator.filmCheck(film)) {
             films.remove(film);
             films.add(film);
