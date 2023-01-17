@@ -36,6 +36,7 @@ public class FilmController {
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
         if (FilmValidator.filmCheck(film)) {
+            films.remove(film);
             films.add(film);
             log.info("Фильм обнавлен имя: {}", film.getName());
         }

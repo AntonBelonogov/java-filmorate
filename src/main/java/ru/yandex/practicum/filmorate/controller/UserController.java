@@ -16,7 +16,6 @@ import java.util.Set;
 public class UserController {
 
     private int id = 1;
-
     Set<User> users = new HashSet<>();
     @GetMapping
     public Set<User> getFilms() {
@@ -37,6 +36,7 @@ public class UserController {
     @PutMapping
     public User updateFilm(@Valid @RequestBody User user) {
         if (UserValidator.userCheck(user)) {
+            users.remove(user);
             users.add(user);
             log.info("Пользователь обнавлен email: {}", user.getEmail());
         }
