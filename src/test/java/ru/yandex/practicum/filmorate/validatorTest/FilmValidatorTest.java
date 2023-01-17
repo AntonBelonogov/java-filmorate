@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.validatorTest;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
-import ru.yandex.practicum.filmorate.validator.UserValidator;
 
 import javax.validation.ValidationException;
 import java.time.LocalDate;
@@ -32,22 +31,22 @@ public class FilmValidatorTest {
 
     @Test
     public void shouldGetInvalidName() {
-        Throwable exception = assertThrows(ValidationException.class, () -> FilmValidator.postFilmCheck(films.get(0)));
+        Throwable exception = assertThrows(ValidationException.class, () -> FilmValidator.filmCheck(films.get(0)));
     }
 
     @Test
     public void shouldGetInvalidDescription() {
         Film film = get200LengthString();
-        Throwable exception = assertThrows(ValidationException.class, () -> FilmValidator.postFilmCheck(film));
+        Throwable exception = assertThrows(ValidationException.class, () -> FilmValidator.filmCheck(film));
     }
 
     @Test
     public void shouldGetInvalidDate() {
-        Throwable exception = assertThrows(ValidationException.class, () -> FilmValidator.postFilmCheck(films.get(2)));
+        Throwable exception = assertThrows(ValidationException.class, () -> FilmValidator.filmCheck(films.get(2)));
     }
 
     @Test
     public void shouldGetInvalidDuration() {
-        Throwable exception = assertThrows(ValidationException.class, () -> FilmValidator.postFilmCheck(films.get(3)));
+        Throwable exception = assertThrows(ValidationException.class, () -> FilmValidator.filmCheck(films.get(3)));
     }
 }

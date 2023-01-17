@@ -6,7 +6,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,7 +26,7 @@ public class FilmController {
     @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) {
         film.setId(id++);
-        if (FilmValidator.postFilmCheck(film)) {
+        if (FilmValidator.filmCheck(film)) {
             films.add(film);
             log.info("Фильм добавлен название: {}", film.getName());
         }
@@ -36,8 +35,7 @@ public class FilmController {
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
-        if (FilmValidator.putFilmCheck(film, films)) {
-            films.remove(film);
+        if (FilmValidator.filmCheck(film)) {
             films.add(film);
             log.info("Фильм обнавлен имя: {}", film.getName());
         }

@@ -23,26 +23,26 @@ public class UserValidatorTest {
 
     @Test
     public void shouldGetInvalidEmail() {
-        Throwable exception = assertThrows(ValidationException.class, () -> UserValidator.postUserCheck(users.get(0)));
+        Throwable exception = assertThrows(ValidationException.class, () -> UserValidator.userCheck(users.get(0)));
     }
 
     @Test
     public void shouldGetInvalidLogin() {
-        Throwable exception2 = assertThrows(ValidationException.class, () -> UserValidator.postUserCheck(users.get(1)));
+        Throwable exception2 = assertThrows(ValidationException.class, () -> UserValidator.userCheck(users.get(1)));
     }
 
     @Test
     public void shouldGetInvalidDate() {
-        Throwable exception3 = assertThrows(ValidationException.class, () -> UserValidator.postUserCheck(users.get(2)));
+        Throwable exception3 = assertThrows(ValidationException.class, () -> UserValidator.userCheck(users.get(2)));
         User user = users.get(3);
-        UserValidator.postUserCheck(users.get(3));
+        UserValidator.userCheck(users.get(3));
         assertEquals(user.getLogin(), users.get(3).getName());
     }
 
     @Test
     public void shouldGetNameFromLogin() {
         User user = users.get(3);
-        UserValidator.postUserCheck(users.get(3));
+        UserValidator.userCheck(users.get(3));
         assertEquals(user.getLogin(), users.get(3).getName());
     }
 

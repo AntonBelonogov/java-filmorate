@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 public class FilmValidator {
-    public static boolean postFilmCheck(Film film) {
+    public static boolean filmCheck(Film film) {
         if(film.getName().trim().isEmpty()) {
             throw new ValidationException("Название не может быть пустым");
         } else if (film.getDescription().length() > 200) {
@@ -18,12 +18,5 @@ public class FilmValidator {
             throw new ValidationException("продолжительность фильма должна быть положительной");
         }
         return true;
-    }
-
-    public static boolean putFilmCheck(Film film, Set<Film> filmSet) {
-        if (postFilmCheck(film))
-            return filmSet.contains(film);
-        else
-            throw new ValidationException("нельзя обновить пользователя");
     }
 }
