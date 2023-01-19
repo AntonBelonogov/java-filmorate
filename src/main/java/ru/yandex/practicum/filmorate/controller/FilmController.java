@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
@@ -26,11 +25,9 @@ public class FilmController {
 
     @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) {
-        if (FilmValidator.filmCheck(film)) {
-            film.setId(id++);
-            films.add(film);
-            log.info("Фильм добавлен название: {}", film.getName());
-        }
+        film.setId(id++);
+        films.add(film);
+        log.info("Фильм добавлен название: {}", film.getName());
         return film;
     }
 
@@ -39,11 +36,9 @@ public class FilmController {
         if (!films.contains(film)) {
             throw new ValidationException("Такой записи нет");
         }
-        if (FilmValidator.filmCheck(film)) {
-            films.remove(film);
-            films.add(film);
-            log.info("Фильм обнавлен имя: {}", film.getName());
-        }
+        films.remove(film);
+        films.add(film);
+        log.info("Фильм обнавлен имя: {}", film.getName());
         return film;
     }
 }

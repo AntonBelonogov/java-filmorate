@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.validator.UserValidator;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
@@ -18,6 +17,7 @@ public class UserController {
 
     private int id = 1;
     Set<User> users = new HashSet<>();
+
     @GetMapping
     public Set<User> getFilms() {
         log.info("Получен запрос на получение списка фильмов: {}", users.toString());
@@ -26,11 +26,12 @@ public class UserController {
 
     @PostMapping
     public User addFilm(@Valid @RequestBody User user) {
-        if(UserValidator.userCheck(user)) {
-            user.setId(id++);
-            users.add(user);
-            log.info("Пользователь добавлен email: {}", user);
+        if (user.getName() == null|| user.getName().equals("") || user.getName().isBlank()) {
+            user.setName(user.getLogin());
         }
+        user.setId(id++);
+        users.add(user);
+        log.info("Пользователь добавлен email: {}", user);
         return user;
     }
 
@@ -39,11 +40,9 @@ public class UserController {
         if (!users.contains(user)) {
             throw new ValidationException("Такого пользователя нет");
         }
-        if (UserValidator.userCheck(user)) {
-            users.remove(user);
-            users.add(user);
-            log.info("Пользователь обнавлен email: {}", user);
-        }
+        users.remove(user);
+        users.add(user);
+        log.info("Пользователь обнавлен email: {}", user);
         return user;
     }
 }
