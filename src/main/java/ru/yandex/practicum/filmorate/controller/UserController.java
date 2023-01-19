@@ -16,7 +16,7 @@ import java.util.Set;
 public class UserController {
 
     private int id = 1;
-    Set<User> users = new HashSet<>();
+    private Set<User> users = new HashSet<>();
 
     @GetMapping
     public Set<User> getFilms() {

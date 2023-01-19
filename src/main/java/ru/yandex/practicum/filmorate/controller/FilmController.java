@@ -15,7 +15,7 @@ import java.util.Set;
 public class FilmController {
 
     private int id = 1;
-    Set<Film> films = new HashSet<>();
+    private Set<Film> films = new HashSet<>();
 
     @GetMapping
     public Set<Film> getFilms() {
