@@ -1,48 +1,60 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
 
 
 @RestController
-@Slf4j
 @RequestMapping("/users")
 public class UserController {
-
-    private int id = 1;
-    private Set<User> users = new HashSet<>();
+    UserService userService;
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
-    public Set<User> getFilms() {
-        log.info("Получен запрос на получение списка фильмов: {}", users.toString());
-        return users;
+    public Collection<User> getUsers() {
+        return userService.getUsers();
+    }
+
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable Integer id) {
+        return userService.getUser(id);
+    }
+
+    @GetMapping("/{id}/friends")
+    public Collection<User> getUserFriends(@PathVariable Integer id) {
+        return userService.getUserFriends(id);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public Collection<User> getMutualFriends(@PathVariable Integer id, @PathVariable Integer otherId) {
+        return userService.getMutualFriends(id, otherId);
     }
 
     @PostMapping
-    public User addFilm(@Valid @RequestBody User user) {
-        if (user.getName() == null|| user.getName().equals("") || user.getName().isBlank()) {
-            user.setName(user.getLogin());
-        }
-        user.setId(id++);
-        users.add(user);
-        log.info("Пользователь добавлен email: {}", user);
-        return user;
+    public User addUser(@Valid @RequestBody User user) {
+        return userService.addUser(user);
+    }
+
+    @PutMapping("/{id}/friends/{friendId}")
+    public User addFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
+        return userService.addFriend(id, friendId);
     }
 
     @PutMapping
-    public User updateFilm(@Valid @RequestBody User user) {
-        if (!users.contains(user)) {
-            throw new ValidationException("Такого пользователя нет");
-        }
-        users.remove(user);
-        users.add(user);
-        log.info("Пользователь обнавлен email: {}", user);
-        return user;
+    public User updateUser(@Valid @RequestBody User user) {
+        return userService.updateUser(user);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public User deleteUser(@PathVariable Integer id, @PathVariable Integer friendId) {
+        return userService.deleteFriend(id, friendId);
     }
 }
