@@ -45,16 +45,8 @@ public class InMemoryUserStorage implements UserStorage{
         if (!users.containsKey(user.getId())) {
             throw new ObjectNotFoundException("Такого пользователя нет");
         }
-        users.remove(user.getId());
         users.put(user.getId(), user);
         log.info("Пользователь обнавлен email: {}", user);
         return user;
-    }
-
-    @Override
-    public Collection<Integer> getUserFriends(Integer id) {
-        if (!users.containsKey(id))
-            throw new ObjectNotFoundException("Пользователь не найден");
-        return users.get(id).getFriendsSet();
     }
 }

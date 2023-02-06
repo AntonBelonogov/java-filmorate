@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import javax.validation.ValidationException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,9 +17,9 @@ public class InMemoryFilmStorage implements FilmStorage{
     private final Map<Integer,Film> films = new HashMap<>();
 
     @Override
-    public Collection<Film> getFilms() {
+    public Map<Integer, Film> getFilms() {
         log.info("Получен запрос на получение списка фильмов: {}", films.values());
-        return films.values();
+        return films;
     }
 
     @Override
@@ -36,7 +35,6 @@ public class InMemoryFilmStorage implements FilmStorage{
         if (!films.containsValue(film)) {
             throw new ObjectNotFoundException("Такой записи нет");
         }
-        films.remove(film.getId());
         films.put(film.getId(), film);
         log.info("Фильм обнавлен имя: {}", film.getName());
         return film;

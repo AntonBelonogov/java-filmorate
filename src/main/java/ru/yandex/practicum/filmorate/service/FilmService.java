@@ -25,7 +25,7 @@ public class FilmService {
     }
 
     public Collection<Film> getFilms() {
-        return filmStorage.getFilms();
+        return filmStorage.getFilms().values();
     }
 
     public Film addFilm(Film film) {
@@ -41,29 +41,21 @@ public class FilmService {
     }
 
     public Film sendLike(Integer filmId, Integer userId) {
-        Film film = filmStorage.getFilm(filmId);
-        User user = userStorage.getUser(userId);
-
-        film.addUserLike(user.getId());
-        filmStorage.updateFilm(film);
-        return film;
+        if (!filmStorage.getFilms().containsKey(filmId) && !userStorage.getUsers().containsKey(userId))
+            throw new ObjectNotFoundException("Фильма или пользователя не существует");
+        filmStorage.getFilm(filmId).getUsersLikes().add(userId);
+        return filmStorage.getFilm(filmId);
     }
 
     public Film deleteLike(Integer filmId, Integer userId) {
-        Film film = filmStorage.getFilm(filmId);
-        User user = userStorage.getUser(userId);
-
-        if (!film.getUsersLikes().contains(user.getId())) {
-            throw new ObjectNotFoundException("Пользователь не ставил лайк");
-        }
-
-        film.deleteUserLike(user.getId());
-        filmStorage.updateFilm(film);
-        return film;
+        if (!userStorage.getUsers().containsKey(userId))
+            throw new ObjectNotFoundException("Такого пользователя нет");
+        filmStorage.getFilm(filmId).getUsersLikes().remove(userId);
+        return filmStorage.getFilm(filmId);
     }
 
     public List<Film> getCountedFilmList(Integer count) {
-        return filmStorage.getFilms()
+        return filmStorage.getFilms().values()
                 .stream()
                 .sorted(Comparator.comparing(Film::getLikesCount))
                 .limit(count)

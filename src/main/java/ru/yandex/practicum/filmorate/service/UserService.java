@@ -30,7 +30,16 @@ public class UserService {
 
     public Collection<User> getUserFriends(Integer id){
         User user = userStorage.getUser(id);
-        return fromIntIdToUser(user);
+        ArrayList<User> commonFriendList = new ArrayList<>();
+        if (user.getFriendsSet() != null) {
+            for (Integer friendId : user.getFriendsSet()) {
+                if (userStorage.getUsers().containsKey(friendId)) {
+                    commonFriendList.add(userStorage.getUser(friendId));
+                }
+            }
+            return commonFriendList;
+        }
+        return Collections.emptyList();
     }
 
     public User addUser(User user) {
@@ -59,11 +68,9 @@ public class UserService {
     public User deleteFriend(Integer userId, Integer friendId) {
         User user = userStorage.getUser(userId);
         User friend = userStorage.getUser(friendId);
-
         if (!user.getFriendsSet().contains(friendId)) {
             throw new RuntimeException("Такого пользователя нет в друзьях");
         }
-
         user.deleteFriend(friendId);
         friend.deleteFriend(userId);
         userStorage.updateUser(user);
@@ -76,19 +83,16 @@ public class UserService {
         if (!userStorage.getUsers().containsKey(id) && !userStorage.getUsers().containsKey(otherId))
             throw new ObjectNotFoundException("Пользователь не найден");
         User user = userStorage.getUser(id);
-        return fromIntIdToUser(user);
-    }
+        User user2 = userStorage.getUser(otherId);
+        List<User> commonUserList = new ArrayList<>();
 
-    private List<User> fromIntIdToUser(User user) {
-        ArrayList<User> commonFriendList = new ArrayList<>();
-        if (user.getFriendsSet() != null) {
-            for (Integer friendId : user.getFriendsSet()) {
-                if (userStorage.getUsers().containsKey(friendId)) {
-                    commonFriendList.add(userStorage.getUser(friendId));
+        for (Integer firstUserFriends : user.getFriendsSet()){
+            for (Integer secondUserFriends : user2.getFriendsSet()) {
+                if (firstUserFriends.equals(secondUserFriends)) {
+                    commonUserList.add(userStorage.getUser(firstUserFriends));
                 }
             }
-            return commonFriendList;
         }
-        return Collections.emptyList();
+        return commonUserList;
     }
 }

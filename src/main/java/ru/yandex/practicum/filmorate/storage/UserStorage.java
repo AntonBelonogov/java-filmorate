@@ -10,6 +10,4 @@ public interface UserStorage {
     User getUser(Integer id);
     User addUser(User user);
     User updateUser(User user);
-
-    Collection<Integer> getUserFriends(Integer id);
 }

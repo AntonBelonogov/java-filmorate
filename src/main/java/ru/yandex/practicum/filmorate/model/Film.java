@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
+import ru.yandex.practicum.filmorate.exception.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.validator.ReleaseDate;
 
 import javax.validation.constraints.NotBlank;
@@ -40,17 +41,6 @@ public class Film {
 
     @JsonIgnoreProperties("usersLikes")
     private final Set<Integer> usersLikes = new HashSet<>();
-
-    public void addUserLike(Integer userId) {
-        usersLikes.add(userId);
-    }
-
-    public void deleteUserLike(Integer userId) {
-        if(!usersLikes.contains(userId)) {
-            throw new RuntimeException("Лайка от пользователя id="+ userId +" нет в записях");
-        }
-        usersLikes.remove(userId);
-    }
 
     public Integer getLikesCount() {
         return usersLikes.size();
