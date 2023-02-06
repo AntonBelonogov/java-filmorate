@@ -12,7 +12,7 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    UserService userService;
+    private final UserService userService;
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;

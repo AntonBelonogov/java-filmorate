@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.controller;
+package ru.yandex.practicum.filmorate.handler;
 
 import jdk.jshell.spi.ExecutionControl;
 import org.springframework.http.HttpStatus;
