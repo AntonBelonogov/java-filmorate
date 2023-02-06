@@ -57,7 +57,7 @@ public class FilmService {
     public List<Film> getCountedFilmList(Integer count) {
         return filmStorage.getFilms().values()
                 .stream()
-                .sorted(Comparator.comparing(Film::getLikesCount))
+                .sorted(Comparator.comparingInt(Film::getLikesCount).reversed())
                 .limit(count)
                 .collect(Collectors.toList());
     }
