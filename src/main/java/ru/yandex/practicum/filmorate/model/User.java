@@ -42,10 +42,12 @@ public class User {
     private LocalDate birthday;
 
     @EqualsAndHashCode.Exclude
-    @JsonIgnoreProperties("friendsSet")
     private final Set<Integer> friendsSet = new HashSet<>();
 
     public void addFriend(Integer id) {
+        if (friendsSet.contains(id)) {
+            throw new RuntimeException("Друг с id="+ id +"уже в списке");
+        }
         friendsSet.add(id);
     }
 

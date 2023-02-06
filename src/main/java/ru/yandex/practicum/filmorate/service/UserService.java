@@ -30,17 +30,7 @@ public class UserService {
 
     public Collection<User> getUserFriends(Integer id){
         User user = userStorage.getUser(id);
-        List<User> userFriendList = new ArrayList<>();
-
-        if(user.getFriendsSet() != null) {
-            for (Integer friendId : user.getFriendsSet()) {
-                if (userStorage.getUsers().containsKey(friendId)) {
-                    userFriendList.add(userStorage.getUser(friendId));
-                }
-            }
-            return userFriendList;
-        } else
-            return Collections.emptyList();
+        return fromIntIdToUser(user);
     }
 
     public User addUser(User user) {
@@ -58,12 +48,11 @@ public class UserService {
         if (user.equals(friend)) {
             throw new RuntimeException("Нельзя добавить самого себя в друзья");
         }
-        if (user != null && friend != null ) {
-            user.addFriend(friendId);
-            friend.addFriend(userId);
-            userStorage.updateUser(user);
-            userStorage.updateUser(friend);
-        }
+        user.addFriend(friendId);
+        friend.addFriend(userId);
+        userStorage.updateUser(user);
+        userStorage.updateUser(friend);
+
         return user;
     }
 
@@ -86,10 +75,12 @@ public class UserService {
     public Collection<User> getMutualFriends(Integer id, Integer otherId) {
         if (!userStorage.getUsers().containsKey(id) && !userStorage.getUsers().containsKey(otherId))
             throw new ObjectNotFoundException("Пользователь не найден");
-
-        ArrayList<User> commonFriendList = new ArrayList<>();
         User user = userStorage.getUser(id);
+        return fromIntIdToUser(user);
+    }
 
+    private List<User> fromIntIdToUser(User user) {
+        ArrayList<User> commonFriendList = new ArrayList<>();
         if (user.getFriendsSet() != null) {
             for (Integer friendId : user.getFriendsSet()) {
                 if (userStorage.getUsers().containsKey(friendId)) {
@@ -97,9 +88,7 @@ public class UserService {
                 }
             }
             return commonFriendList;
-        } else {
-            return Collections.emptyList();
         }
-
+        return Collections.emptyList();
     }
 }

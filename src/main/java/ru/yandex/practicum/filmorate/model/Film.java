@@ -39,7 +39,7 @@ public class Film {
     private int duration;
 
     @JsonIgnoreProperties("usersLikes")
-    private Set<Integer> usersLikes = new HashSet<>();
+    private final Set<Integer> usersLikes = new HashSet<>();
 
     public void addUserLike(Integer userId) {
         usersLikes.add(userId);
