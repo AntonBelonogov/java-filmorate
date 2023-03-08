@@ -15,9 +15,9 @@ public class InMemoryUserStorage implements UserStorage{
     private final HashMap<Integer,User> users = new HashMap<>();
 
     @Override
-    public Map<Integer, User> getUsers() {
+    public List<User> getUsers() {
         log.info("Получен запрос на получение списка пользователей: {}", users.values());
-        return users;
+        return new ArrayList<>(users.values());
     }
 
     @Override

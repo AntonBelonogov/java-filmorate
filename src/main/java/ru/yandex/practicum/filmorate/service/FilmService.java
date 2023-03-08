@@ -40,14 +40,14 @@ public class FilmService {
     }
 
     public Film sendLike(Integer filmId, Integer userId) {
-        if (!filmStorage.getFilms().containsKey(filmId) && !userStorage.getUsers().containsKey(userId))
+        if (!filmStorage.getFilms().containsKey(filmId) && !userStorage.getUsers().contains(userId))
             throw new ObjectNotFoundException("Фильма или пользователя не существует");
         filmStorage.getFilm(filmId).getUsersLikes().add(userId);
         return filmStorage.getFilm(filmId);
     }
 
     public Film deleteLike(Integer filmId, Integer userId) {
-        if (!userStorage.getUsers().containsKey(userId))
+        if (!userStorage.getUsers().contains(userId))
             throw new ObjectNotFoundException("Такого пользователя нет");
         filmStorage.getFilm(filmId).getUsersLikes().remove(userId);
         return filmStorage.getFilm(filmId);

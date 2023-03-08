@@ -20,7 +20,7 @@ public class UserService {
     }
 
     public Collection<User> getUsers() {
-        return userStorage.getUsers().values();
+        return userStorage.getUsers();
     }
 
     public User getUser(Integer id) {
@@ -32,7 +32,7 @@ public class UserService {
         ArrayList<User> commonFriendList = new ArrayList<>();
         if (user.getFriendsSet() != null) {
             for (Integer friendId : user.getFriendsSet()) {
-                if (userStorage.getUsers().containsKey(friendId)) {
+                if (userStorage.getUsers().contains(friendId)) {
                     commonFriendList.add(userStorage.getUser(friendId));
                 }
             }
@@ -79,7 +79,7 @@ public class UserService {
     }
 
     public Collection<User> getMutualFriends(Integer id, Integer otherId) {
-        if (!userStorage.getUsers().containsKey(id) && !userStorage.getUsers().containsKey(otherId))
+        if (!userStorage.getUsers().contains(id) && !userStorage.getUsers().contains(otherId))
             throw new ObjectNotFoundException("Пользователь не найден");
         User user = userStorage.getUser(id);
         User user2 = userStorage.getUser(otherId);
