@@ -25,6 +25,9 @@ public class UserService {
     }
 
     public User getUser(Integer id) {
+        if (!userStorage.isUserExists(id)) {
+            throw new ObjectNotFoundException("User id not found to update.");
+        }
         return userStorage.getUser(id);
     }
 
@@ -43,6 +46,9 @@ public class UserService {
     }
 
     public User addUser(User user) {
+        if (user.getName() == null|| user.getName().equals("") || user.getName().isBlank()) {
+            user.setName(user.getLogin());
+        }
         return userStorage.addUser(user);
     }
 
@@ -53,19 +59,8 @@ public class UserService {
         return userStorage.updateUser(user);
     }
 
-    public User addFriend(Integer userId, Integer friendId) {
-        User user = userStorage.getUser(userId);
-        User friend = userStorage.getUser(friendId);
-
-        if (user.equals(friend)) {
-            throw new RuntimeException("Нельзя добавить самого себя в друзья");
-        }
-        user.addFriend(friendId);
-        friend.addFriend(userId);
-        userStorage.updateUser(user);
-        userStorage.updateUser(friend);
-
-        return user;
+    public Boolean addFriend(Integer userId, Integer friendId) {
+        return userStorage.addFriend(userId, friendId);
     }
 
     public User deleteFriend(Integer userId, Integer friendId) {
@@ -83,19 +78,6 @@ public class UserService {
     }
 
     public Collection<User> getMutualFriends(Integer id, Integer otherId) {
-        if (!userStorage.getUsers().contains(id) && !userStorage.getUsers().contains(otherId))
-            throw new ObjectNotFoundException("Пользователь не найден");
-        User user = userStorage.getUser(id);
-        User user2 = userStorage.getUser(otherId);
-        List<User> commonUserList = new ArrayList<>();
-
-        for (Integer firstUserFriends : user.getFriendsSet()){
-            for (Integer secondUserFriends : user2.getFriendsSet()) {
-                if (firstUserFriends.equals(secondUserFriends)) {
-                    commonUserList.add(userStorage.getUser(firstUserFriends));
-                }
-            }
-        }
-        return commonUserList;
+        return userStorage.getMutualFriends(id, otherId);
     }
 }

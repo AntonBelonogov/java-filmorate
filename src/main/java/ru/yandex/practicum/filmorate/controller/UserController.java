@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public User addFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
+    public Boolean addFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
         return userService.addFriend(id, friendId);
     }
 

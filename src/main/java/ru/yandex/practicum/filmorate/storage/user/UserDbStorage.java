@@ -79,15 +79,15 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public void addFriend(Integer id, Integer friendId) {
+    public Boolean addFriend(Integer id, Integer friendId) {
         final String sqlQuery = "INSERT INTO user_friends (user_id, friend_id, is_conformed) VALUES (?, ?, ?)";
         if(isBackwardRequestExists(id, friendId)) {
             jdbcTemplate.update(sqlQuery, id, friendId, true);
             final String sqlQueryUpdate = "UPDATE user_friends SET " +
                     "is_conformed = true WHERE user_id = ? AND friend_id = ?";
-            jdbcTemplate.update(sqlQueryUpdate, friendId, id);
+            return jdbcTemplate.update(sqlQueryUpdate, friendId, id) > 0;
         } else {
-            jdbcTemplate.update(sqlQuery, id, friendId, false);
+            return jdbcTemplate.update(sqlQuery, id, friendId, false) > 0;
         }
     }
     private boolean isBackwardRequestExists(Integer id, Integer friendId) {

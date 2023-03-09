@@ -55,8 +55,8 @@ public class InMemoryUserStorage implements UserStorage{
     }
 
     @Override
-    public void addFriend(Integer id, Integer friendId) {
-
+    public Boolean addFriend(Integer id, Integer friendId) {
+        return null;
     }
 
     @Override
