@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -18,13 +19,13 @@ public class FilmService {
     private final UserStorage userStorage;
 
     @Autowired
-    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
+    public FilmService(@Qualifier("filmDbStorage") FilmStorage filmStorage, @Qualifier("userDbStorage") UserStorage userStorage) {
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
     }
 
     public Collection<Film> getFilms() {
-        return filmStorage.getFilms().values();
+        return filmStorage.getFilms();
     }
 
     public Film addFilm(Film film) {
@@ -40,7 +41,7 @@ public class FilmService {
     }
 
     public Film sendLike(Integer filmId, Integer userId) {
-        if (!filmStorage.getFilms().containsKey(filmId) && !userStorage.getUsers().contains(userId))
+        if (!filmStorage.getFilms().contains(filmId) && !userStorage.getUsers().contains(userId))
             throw new ObjectNotFoundException("Фильма или пользователя не существует");
         filmStorage.getFilm(filmId).getUsersLikes().add(userId);
         return filmStorage.getFilm(filmId);
@@ -54,7 +55,7 @@ public class FilmService {
     }
 
     public List<Film> getCountedFilmList(Integer count) {
-        return filmStorage.getFilms().values()
+        return filmStorage.getFilms()
                 .stream()
                 .sorted(Comparator.comparingInt(Film::getLikesCount).reversed())
                 .limit(count)
