@@ -11,4 +11,10 @@ public interface UserStorage {
     User getUser(Integer id);
     User addUser(User user);
     User updateUser(User user);
+    Boolean isUserExists(Integer id);
+    void addFriend(Integer id, Integer friendId);
+    void deleteFriend(Integer id, Integer friendId);
+
+    Collection<User> getMutualFriends(Integer id, Integer friendId);
+
 }

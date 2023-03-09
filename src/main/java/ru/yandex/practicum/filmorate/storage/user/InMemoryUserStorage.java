@@ -48,4 +48,24 @@ public class InMemoryUserStorage implements UserStorage{
         log.info("Пользователь обнавлен email: {}", user);
         return user;
     }
+
+    @Override
+    public Boolean isUserExists(Integer id) {
+        return null;
+    }
+
+    @Override
+    public void addFriend(Integer id, Integer friendId) {
+
+    }
+
+    @Override
+    public void deleteFriend(Integer id, Integer friendId) {
+
+    }
+
+    @Override
+    public Collection<User> getMutualFriends(Integer id, Integer friendId) {
+        return null;
+    }
 }

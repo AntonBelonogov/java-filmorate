@@ -47,6 +47,9 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        if (!userStorage.isUserExists(user.getId())) {
+            throw new ObjectNotFoundException("User id not found to update.");
+        }
         return userStorage.updateUser(user);
     }
 
