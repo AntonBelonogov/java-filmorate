@@ -43,7 +43,7 @@ public class UserDbStorage implements UserStorage{
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(con -> {
-            PreparedStatement statement = con.prepareStatement(sqlQuery, new String[]{"id"});
+            PreparedStatement statement = con.prepareStatement(sqlQuery, new String[]{"user_id"});
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getLogin());
             statement.setString(3, user.getName());
@@ -70,7 +70,6 @@ public class UserDbStorage implements UserStorage{
 
     private User mapRowToUser(ResultSet resultSet, int rowNum) throws SQLException {
         return User.builder()
-                .id(resultSet.getInt("USER_ID"))
                 .email(resultSet.getString("EMAIL"))
                 .login(resultSet.getString("LOGIN"))
                 .name(resultSet.getString("NAME"))

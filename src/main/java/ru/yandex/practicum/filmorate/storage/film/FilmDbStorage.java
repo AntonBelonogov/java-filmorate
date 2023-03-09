@@ -38,7 +38,7 @@ public class FilmDbStorage implements FilmStorage{
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(con -> {
-            PreparedStatement statement = con.prepareStatement(sqlQuery, new String[]{"id"});
+            PreparedStatement statement = con.prepareStatement(sqlQuery, new String[]{"film_id"});
             statement.setString(1, film.getName());
             statement.setString(2, film.getDescription());
             statement.setDate(3, Date.valueOf(film.getReleaseDate()));

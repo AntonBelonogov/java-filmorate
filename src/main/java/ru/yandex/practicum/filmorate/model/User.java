@@ -46,13 +46,6 @@ public class User {
     @EqualsAndHashCode.Exclude
     private final Set<Integer> friendsSet = new HashSet<>();
 
-    public User(String login, String name, String email, LocalDate birthday) {
-        this.login = login;
-        this.name = name;
-        this.email = email;
-        this.birthday = birthday;
-    }
-
     public void addFriend(Integer id) {
         if (friendsSet.contains(id)) {
             throw new RuntimeException("Друг с id="+ id +"уже в списке");
