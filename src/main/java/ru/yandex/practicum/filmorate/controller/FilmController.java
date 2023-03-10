@@ -47,12 +47,12 @@ public class FilmController {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public Film userPostLike(@PathVariable Integer id, @PathVariable Integer userId) {
+    public Boolean userPostLike(@PathVariable Integer id, @PathVariable Integer userId) {
         return filmService.sendLike(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    public Film userDeleteLike(@PathVariable Integer id, @PathVariable Integer userId) {
+    public Boolean userDeleteLike(@PathVariable Integer id, @PathVariable Integer userId) {
         return filmService.deleteLike(id,userId);
     }
 }

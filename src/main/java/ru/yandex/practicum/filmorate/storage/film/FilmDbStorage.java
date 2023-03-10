@@ -78,13 +78,15 @@ public class FilmDbStorage implements FilmStorage{
     }
 
     @Override
-    public Film sendLike(Integer filmId, Integer userId) {
-        return null;
+    public Boolean sendLike(Integer filmId, Integer userId) {
+        final String sqlQuery = "INSERT INTO user_likes (film_id, user_id) VALUES (?, ?)";
+        return jdbcTemplate.update(sqlQuery, filmId, userId) > 0;
     }
 
     @Override
-    public Film deleteLike(Integer filmId, Integer userId) {
-        return null;
+    public Boolean deleteLike(Integer filmId, Integer userId) {
+        final String sqlQuery = "DELETE FROM user_likes WHERE film_id = ? AND user_id = ?";
+        return jdbcTemplate.update(sqlQuery, filmId, userId) > 0;
     }
 
     private List<Genre> getGenres(int film_id) {

@@ -55,12 +55,12 @@ public class InMemoryFilmStorage implements FilmStorage{
     }
 
     @Override
-    public Film sendLike(Integer filmId, Integer userId) {
+    public Boolean sendLike(Integer filmId, Integer userId) {
         return null;
     }
 
     @Override
-    public Film deleteLike(Integer filmId, Integer userId) {
+    public Boolean deleteLike(Integer filmId, Integer userId) {
         return null;
     }
 }

@@ -11,6 +11,6 @@ public interface FilmStorage {
     Film updateFilm(Film film);
     Film getFilm(Integer filmId);
     Boolean isFilmExists(Integer id);
-    Film sendLike(Integer filmId, Integer userId);
-    Film deleteLike(Integer filmId, Integer userId);
+    Boolean sendLike(Integer filmId, Integer userId);
+    Boolean deleteLike(Integer filmId, Integer userId);
 }

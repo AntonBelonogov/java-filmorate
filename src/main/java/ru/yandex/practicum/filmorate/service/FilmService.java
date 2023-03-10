@@ -46,18 +46,18 @@ public class FilmService {
         return filmStorage.getFilm(id);
     }
 
-    public Film sendLike(Integer filmId, Integer userId) {
-        if (!filmStorage.getFilms().contains(filmId) && !userStorage.getUsers().contains(userId))
-            throw new ObjectNotFoundException("Unknown user and/or film.");
-        filmStorage.getFilm(filmId).getUsersLikes().add(userId);
-        return filmStorage.getFilm(filmId);
+    public Boolean sendLike(Integer filmId, Integer userId) {
+        if (!filmStorage.isFilmExists(filmId) && !userStorage.isUserExists(userId)) {
+            throw new ObjectNotFoundException("User and/or film not found.");
+        }
+        return filmStorage.sendLike(filmId, userId);
     }
 
-    public Film deleteLike(Integer filmId, Integer userId) {
-        if (!userStorage.getUsers().contains(userId))
-            throw new ObjectNotFoundException("Такого пользователя нет");
-        filmStorage.getFilm(filmId).getUsersLikes().remove(userId);
-        return filmStorage.getFilm(filmId);
+    public Boolean deleteLike(Integer filmId, Integer userId) {
+        if (!filmStorage.isFilmExists(filmId) && !userStorage.isUserExists(userId)) {
+            throw new ObjectNotFoundException("User and/or film not found.");
+        }
+        return filmStorage.deleteLike(filmId, userId);
     }
 
     public List<Film> getCountedFilmList(Integer count) {
