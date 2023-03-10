@@ -13,4 +13,5 @@ public interface FilmStorage {
     Boolean isFilmExists(Integer id);
     Boolean sendLike(Integer filmId, Integer userId);
     Boolean deleteLike(Integer filmId, Integer userId);
+    List<Film> getMostPopularFilm(Integer limit);
 }

@@ -89,6 +89,16 @@ public class FilmDbStorage implements FilmStorage{
         return jdbcTemplate.update(sqlQuery, filmId, userId) > 0;
     }
 
+    @Override
+    public List<Film> getMostPopularFilm(Integer limit) {
+        final String sqlQuery = "SELECT * FROM film " +
+                "LEFT JOIN user_likes ON film.film_id = user_likes.film_id " +
+                "GROUP BY film.film_id " +
+                "ORDER BY COUNT(user_likes.user_id) DESC " +
+                "LIMIT ?";
+        return jdbcTemplate.query(sqlQuery, this::mapRowToFilm, limit);
+    }
+
     private List<Genre> getGenres(int film_id) {
         final String sqlQuery = "SELECT * FROM GENRE LEFT JOIN FILM_GENRE AS fg ON genre.genre_id = fg.genre_id " +
                 "WHERE film_id = ?";

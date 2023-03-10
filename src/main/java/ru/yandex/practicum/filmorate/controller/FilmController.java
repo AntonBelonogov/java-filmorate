@@ -33,7 +33,7 @@ public class FilmController {
     public List<Film> getFilmCounted(@RequestParam(required = false, defaultValue = "10") Integer count) {
         if(count <= 0)
             throw new IllegalArgumentException("Параметер count не может быть меньше 0");
-        return filmService.getCountedFilmList(count);
+        return filmService.getMostPopularFilm(count);
     }
 
     @PostMapping

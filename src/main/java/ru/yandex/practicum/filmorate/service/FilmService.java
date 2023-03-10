@@ -60,11 +60,7 @@ public class FilmService {
         return filmStorage.deleteLike(filmId, userId);
     }
 
-    public List<Film> getCountedFilmList(Integer count) {
-        return filmStorage.getFilms()
-                .stream()
-                .sorted(Comparator.comparingInt(Film::getLikesCount).reversed())
-                .limit(count)
-                .collect(Collectors.toList());
+    public List<Film> getMostPopularFilm(Integer count) {
+        return filmStorage.getMostPopularFilm(count);
     }
 }
