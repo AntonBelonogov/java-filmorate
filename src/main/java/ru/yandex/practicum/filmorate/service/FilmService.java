@@ -33,16 +33,22 @@ public class FilmService {
     }
 
     public Film updateFilm(Film film) {
+        if (!filmStorage.isFilmExists(film.getId())) {
+            throw new ObjectNotFoundException("Film id= " + film.getId() + "not found.");
+        }
         return filmStorage.updateFilm(film);
     }
 
     public Film getFilm(Integer id) {
+        if (!filmStorage.isFilmExists(id)) {
+            throw new ObjectNotFoundException("Film id= " + id + "not found.");
+        }
         return filmStorage.getFilm(id);
     }
 
     public Film sendLike(Integer filmId, Integer userId) {
         if (!filmStorage.getFilms().contains(filmId) && !userStorage.getUsers().contains(userId))
-            throw new ObjectNotFoundException("Фильма или пользователя не существует");
+            throw new ObjectNotFoundException("Unknown user and/or film.");
         filmStorage.getFilm(filmId).getUsersLikes().add(userId);
         return filmStorage.getFilm(filmId);
     }
