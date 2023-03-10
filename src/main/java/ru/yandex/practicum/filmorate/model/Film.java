@@ -47,6 +47,14 @@ public class Film {
     @JsonIgnoreProperties("usersLikes")
     private final Set<Integer> usersLikes = new HashSet<>();
 
+    public Film(int id, String name, String description, LocalDate of, int duration) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.releaseDate = of;
+        this.duration = duration;
+    }
+
     public Integer getLikesCount() {
         return usersLikes.size();
     }
