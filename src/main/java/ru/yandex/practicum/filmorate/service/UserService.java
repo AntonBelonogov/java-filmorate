@@ -32,17 +32,7 @@ public class UserService {
     }
 
     public Collection<User> getUserFriends(Integer id){
-        User user = userStorage.getUser(id);
-        ArrayList<User> commonFriendList = new ArrayList<>();
-        if (user.getFriendsSet() != null) {
-            for (Integer friendId : user.getFriendsSet()) {
-                if (userStorage.getUsers().contains(friendId)) {
-                    commonFriendList.add(userStorage.getUser(friendId));
-                }
-            }
-            return commonFriendList;
-        }
-        return Collections.emptyList();
+        return userStorage.getUserFriends(id);
     }
 
     public User addUser(User user) {
@@ -60,21 +50,17 @@ public class UserService {
     }
 
     public Boolean addFriend(Integer userId, Integer friendId) {
+        if (!userStorage.isUserExists(userId) || !userStorage.isUserExists(friendId))  {
+            throw new ObjectNotFoundException("User id not found to update.");
+        }
         return userStorage.addFriend(userId, friendId);
     }
 
-    public User deleteFriend(Integer userId, Integer friendId) {
-        User user = userStorage.getUser(userId);
-        User friend = userStorage.getUser(friendId);
-        if (!user.getFriendsSet().contains(friendId)) {
-            throw new RuntimeException("Такого пользователя нет в друзьях");
+    public Boolean deleteFriend(Integer userId, Integer friendId) {
+        if (!userStorage.isUserExists(userId) || !userStorage.isUserExists(friendId))  {
+            throw new ObjectNotFoundException("User id not found to update.");
         }
-        user.deleteFriend(friendId);
-        friend.deleteFriend(userId);
-        userStorage.updateUser(user);
-        userStorage.updateUser(friend);
-
-        return user;
+        return userStorage.deleteFriend(userId, friendId);
     }
 
     public Collection<User> getMutualFriends(Integer id, Integer otherId) {

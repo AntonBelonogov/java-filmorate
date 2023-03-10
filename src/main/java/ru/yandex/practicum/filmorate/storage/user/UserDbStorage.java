@@ -79,6 +79,14 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
+    public List<User> getUserFriends(Integer userId) {
+        final String sqlQuery = "SELECT users.* FROM user_friends " +
+                "INNER JOIN users ON user_friends.friend_id = users.user_id " +
+                "WHERE user_friends.user_id = ?";
+        return jdbcTemplate.query(sqlQuery, this::mapRowToUser, userId);
+    }
+
+    @Override
     public Boolean addFriend(Integer id, Integer friendId) {
         final String sqlQuery = "INSERT INTO user_friends (user_id, friend_id, is_conformed) VALUES (?, ?, ?)";
         if(isBackwardRequestExists(id, friendId)) {
@@ -96,12 +104,12 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public void deleteFriend(Integer id, Integer friendId) {
+    public Boolean deleteFriend(Integer id, Integer friendId) {
         final String sqlQuery = "DELETE FROM user_friends WHERE user_id = ? AND friend_id = ?";
-        jdbcTemplate.update(sqlQuery, id, friendId);
         if(isBackwardRequestExists(friendId, id)) {
             jdbcTemplate.update(sqlQuery, friendId, id);
         }
+        return jdbcTemplate.update(sqlQuery, id, friendId) > 0;
     }
 
     @Override
