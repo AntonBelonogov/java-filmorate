@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.storage.genre;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmGenre;
 import ru.yandex.practicum.filmorate.model.Genre;
 
@@ -17,7 +16,7 @@ public class GenreDbStorage {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Collection<Genre> getGenres() {
+    public List<Genre> getGenres() {
         final String sqlQuery = "SELECT * FROM GENRE";
         return jdbcTemplate.query(sqlQuery, this::mapRowToGenre);
     }
@@ -34,16 +33,24 @@ public class GenreDbStorage {
             if (!filmGenreList.contains(filmGenre.getFilmId())) {
                 map.put(filmGenre.getFilmId(), new ArrayList<>());
             }
-            //map.get(filmGenre.getFilmId()).add(filmGenre.getGenreId());
+            map.get(filmGenre.getFilmId()).add(filmGenre.getGenre());
         }
-        return null;
+        return map;
+    }
+    public Boolean isGenreExists(Integer id) {
+        final String sqlQuery = "SELECT EXISTS(SELECT * FROM genre WHERE genre_id = ?)";
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlQuery, Boolean.class, id));
     }
 
-    private FilmGenre mapRowToFilmGenre(ResultSet resultSet, int rowNum) throws  SQLException {
+    private FilmGenre mapRowToFilmGenre(ResultSet resultSet, int rowNum) throws SQLException {
+        Genre genre = Genre.builder()
+                .id(resultSet.getInt("genre_id"))
+                .name(resultSet.getString("name"))
+                .build();
+
         return FilmGenre.builder()
-                .filmGenreId(resultSet.getInt("film_genre_id"))
                 .filmId(resultSet.getInt("film_id"))
-                .genreId(resultSet.getInt("genre_id"))
+                .genre(genre)
                 .build();
 
     }

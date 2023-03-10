@@ -11,4 +11,6 @@ import lombok.RequiredArgsConstructor;
 public class Genre {
     private int id;
     private String name;
+    public Genre() {
+    }
 }

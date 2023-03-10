@@ -13,6 +13,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,7 +48,17 @@ public class FilmDbStorage implements FilmStorage{
             statement.setInt(5, film.getMpa().getId());
             return statement;
         }, keyHolder);
+
         film.setId(Objects.requireNonNull(keyHolder.getKey()).intValue());
+        film.setMpa(getMpa(film.getMpa().getId()));
+
+        final String sqlGenreQuery = "INSERT INTO film_genre (film_id, genre_id) " +
+                "VALUES (?, ?)";
+        if (film.getGenres() != null) {
+            for (Genre genre : new HashSet<>(film.getGenres())) {
+                jdbcTemplate.update(sqlGenreQuery, film.getId(), genre.getId());
+            }
+        }
         return film;
     }
 
@@ -100,7 +112,8 @@ public class FilmDbStorage implements FilmStorage{
     }
 
     private List<Genre> getGenres(int film_id) {
-        final String sqlQuery = "SELECT * FROM GENRE LEFT JOIN FILM_GENRE AS fg ON genre.genre_id = fg.genre_id " +
+        final String sqlQuery = "SELECT * FROM GENRE " +
+                "LEFT JOIN film_genre ON genre.genre_id = film_genre.genre_id " +
                 "WHERE film_id = ?";
         return jdbcTemplate.query(sqlQuery, this::mapRowToGenre, film_id);
     }
@@ -117,8 +130,8 @@ public class FilmDbStorage implements FilmStorage{
     }
     private Genre mapRowToGenre(ResultSet resultSet, int rowNum) throws SQLException {
         return Genre.builder()
-                .id(resultSet.getInt("GENRE_ID"))
-                .name(resultSet.getString("NAME"))
+                .id(resultSet.getInt("genre_id"))
+                .name(resultSet.getString("name"))
                 .build();
     }
 

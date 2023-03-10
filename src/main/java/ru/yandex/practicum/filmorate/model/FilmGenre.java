@@ -10,7 +10,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class FilmGenre {
-    int filmGenreId;
     int filmId;
-    int genreId;
+    Genre genre;
 }

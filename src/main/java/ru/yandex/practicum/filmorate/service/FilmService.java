@@ -52,7 +52,7 @@ public class FilmService {
     }
 
     public Boolean deleteLike(Integer filmId, Integer userId) {
-        if (!filmStorage.isFilmExists(filmId) && !userStorage.isUserExists(userId)) {
+        if (!filmStorage.isFilmExists(filmId) || !userStorage.isUserExists(userId)) {
             throw new ObjectNotFoundException("User and/or film not found.");
         }
         return filmStorage.deleteLike(filmId, userId);
