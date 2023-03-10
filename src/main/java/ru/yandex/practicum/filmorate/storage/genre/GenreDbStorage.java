@@ -21,46 +21,16 @@ public class GenreDbStorage {
         return jdbcTemplate.query(sqlQuery, this::mapRowToGenre);
     }
 
-    public List<Genre> getGenres(int film_id) {
-        final String sqlQuery = "SELECT * FROM GENRE " +
-                "LEFT JOIN film_genre ON genre.genre_id = film_genre.genre_id " +
-                "WHERE film_id = ?";
-        return jdbcTemplate.query(sqlQuery, this::mapRowToGenre, film_id);
-    }
-
     public Genre getGenre(int id) {
         final String sqlQuery = "SELECT * FROM GENRE WHERE GENRE_ID = ?";
         return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToGenre, id);
     }
-    public Map<Integer, List<Genre>> getFilmsGenres() {
-        final String sqlQuery = "SELECT * FROM FILM_GENRE JOIN GENRE ON FILM_GENRE.GENRE_ID = GENRE.GENRE_ID";
-        List<FilmGenre> filmGenreList = jdbcTemplate.query(sqlQuery, this::mapRowToFilmGenre);
-        Map<Integer, List<Genre>> map = new HashMap<>();
-        for (FilmGenre filmGenre : filmGenreList) {
-            if (!filmGenreList.contains(filmGenre.getFilmId())) {
-                map.put(filmGenre.getFilmId(), new ArrayList<>());
-            }
-            map.get(filmGenre.getFilmId()).add(filmGenre.getGenre());
-        }
-        return map;
-    }
+
     public Boolean isGenreExists(Integer id) {
         final String sqlQuery = "SELECT EXISTS(SELECT * FROM genre WHERE genre_id = ?)";
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlQuery, Boolean.class, id));
     }
 
-    private FilmGenre mapRowToFilmGenre(ResultSet resultSet, int rowNum) throws SQLException {
-        Genre genre = Genre.builder()
-                .id(resultSet.getInt("genre_id"))
-                .name(resultSet.getString("name"))
-                .build();
-
-        return FilmGenre.builder()
-                .filmId(resultSet.getInt("film_id"))
-                .genre(genre)
-                .build();
-
-    }
     private Genre mapRowToGenre(ResultSet resultSet, int rowNum) throws SQLException {
         return Genre.builder()
                 .id(resultSet.getInt("GENRE_ID"))

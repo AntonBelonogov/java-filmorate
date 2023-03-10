@@ -22,10 +22,6 @@ public class GenreService {
         return genreDbStorage.getGenres();
     }
 
-    public Map<Integer, List<Genre>> getFilmsGenres() {
-        return genreDbStorage.getFilmsGenres();
-    }
-
     public Genre getGenre(Integer id) {
         if(!genreDbStorage.isGenreExists(id)) {
             throw new ObjectNotFoundException("Genre id=" + id + " not found.");
