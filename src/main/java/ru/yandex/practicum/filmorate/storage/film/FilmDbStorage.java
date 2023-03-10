@@ -45,7 +45,7 @@ public class FilmDbStorage implements FilmStorage{
             statement.setInt(4, film.getDuration());
             statement.setInt(5, film.getMpa().getId());
             return statement;
-        });
+        }, keyHolder);
         film.setId(Objects.requireNonNull(keyHolder.getKey()).intValue());
         return film;
     }
@@ -69,6 +69,22 @@ public class FilmDbStorage implements FilmStorage{
     public Film getFilm(Integer filmId) {
         final String sqlQuery = "SELECT * FROM FILM WHERE FILM_ID = ?";
         return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToFilm, filmId);
+    }
+
+    @Override
+    public Boolean isFilmExists(Integer id) {
+        final String sqlQuery = "SELECT EXISTS(SELECT * FROM film WHERE film_id = ?)";
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlQuery, Boolean.class, id));
+    }
+
+    @Override
+    public Film sendLike(Integer filmId, Integer userId) {
+        return null;
+    }
+
+    @Override
+    public Film deleteLike(Integer filmId, Integer userId) {
+        return null;
     }
 
     private List<Genre> getGenres(int film_id) {

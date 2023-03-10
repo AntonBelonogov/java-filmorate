@@ -48,4 +48,19 @@ public class InMemoryFilmStorage implements FilmStorage{
         }
         return films.get(filmId);
     }
+
+    @Override
+    public Boolean isFilmExists(Integer id) {
+        return null;
+    }
+
+    @Override
+    public Film sendLike(Integer filmId, Integer userId) {
+        return null;
+    }
+
+    @Override
+    public Film deleteLike(Integer filmId, Integer userId) {
+        return null;
+    }
 }
