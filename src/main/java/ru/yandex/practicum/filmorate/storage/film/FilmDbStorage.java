@@ -13,10 +13,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Component("filmDbStorage")
 public class FilmDbStorage implements FilmStorage{
@@ -29,7 +26,14 @@ public class FilmDbStorage implements FilmStorage{
     @Override
     public List<Film> getFilms() {
         final String sqlQuery = "SELECT * FROM FILM";
-        return jdbcTemplate.query(sqlQuery, this::mapRowToFilm);
+
+        List<Film> filmList = new ArrayList<>(jdbcTemplate.query(sqlQuery, this::mapRowToFilm));
+
+        for(Film film : filmList) {
+            film.setGenres(getGenres(film.getId()));
+        }
+
+        return filmList;
     }
 
     @Override
@@ -74,6 +78,21 @@ public class FilmDbStorage implements FilmStorage{
                 film.getDuration(),
                 film.getMpa().getId(),
                 film.getId());
+        if (film.getGenres() != null) {
+            List<Genre> genreList = new ArrayList<>();
+            final String sqlDeleteQuery = "DELETE FROM film_genre WHERE film_id = ?";
+            final String sqlInsertQuery = "INSERT INTO film_genre (film_id, genre_id) " +
+                    "VALUES (?, ?)";
+            jdbcTemplate.update(sqlDeleteQuery, film.getId());
+            for (Genre genre : new HashSet<>(film.getGenres())) {
+                jdbcTemplate.update(sqlInsertQuery, film.getId(), genre.getId());
+                genreList.add(genre);
+            }
+            genreList.sort((o1, o2) -> {
+                return o1.getId() - o2.getId();
+            });
+            film.setGenres(genreList);
+        }
         return film;
     }
 

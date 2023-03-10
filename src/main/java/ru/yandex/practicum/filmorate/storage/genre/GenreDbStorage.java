@@ -21,6 +21,13 @@ public class GenreDbStorage {
         return jdbcTemplate.query(sqlQuery, this::mapRowToGenre);
     }
 
+    public List<Genre> getGenres(int film_id) {
+        final String sqlQuery = "SELECT * FROM GENRE " +
+                "LEFT JOIN film_genre ON genre.genre_id = film_genre.genre_id " +
+                "WHERE film_id = ?";
+        return jdbcTemplate.query(sqlQuery, this::mapRowToGenre, film_id);
+    }
+
     public Genre getGenre(int id) {
         final String sqlQuery = "SELECT * FROM GENRE WHERE GENRE_ID = ?";
         return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToGenre, id);
