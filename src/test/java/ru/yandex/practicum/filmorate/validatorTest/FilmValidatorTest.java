@@ -13,12 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FilmValidatorTest {
 
-    List<Film> films = new ArrayList<>(List.of(
-            new Film(0, "", "Tam koro4e 2 4ernix takie ......  eeeeeeee", LocalDate.of(2000, 1, 25), 1000),
-            new Film(0, "Movie43", "Tam koro4e 2 4ernix takie ......  eeeeeeee", LocalDate.of(2000, 1, 25), 1000),
-            new Film(0, "Movie43", "Tam koro4e 2 4ernix takie ......  eeeeeeee", LocalDate.of(1890, 1, 25), 1000),
-            new Film(0, "Movie43", "Tam koro4e 2 4ernix takie ......  eeeeeeee", LocalDate.of(2000, 1, 25), -1000)
-            ));
+    List<Film> films = new ArrayList<>();
 
     public Film get200LengthString() {
         String string = "";

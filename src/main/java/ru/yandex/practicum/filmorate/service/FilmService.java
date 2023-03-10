@@ -43,6 +43,12 @@ public class FilmService {
         }
         return filmStorage.getFilm(id);
     }
+    public Film deleteFilm(Integer filmId) {
+        if(!filmStorage.isFilmExists(filmId)) {
+            throw new ObjectNotFoundException("Film id=" + filmId + " not found.");
+        }
+        return filmStorage.deleteFilm(filmId);
+    }
 
     public Boolean sendLike(Integer filmId, Integer userId) {
         if (!filmStorage.isFilmExists(filmId) && !userStorage.isUserExists(userId)) {

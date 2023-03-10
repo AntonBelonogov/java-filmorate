@@ -50,6 +50,11 @@ public class FilmController {
         return filmService.sendLike(id, userId);
     }
 
+    @DeleteMapping("/{id}")
+    public Film deleteFilm(@PathVariable Integer film_id) {
+        return filmService.deleteFilm(film_id);
+    }
+
     @DeleteMapping("/{id}/like/{userId}")
     public Boolean userDeleteLike(@PathVariable Integer id, @PathVariable Integer userId) {
         return filmService.deleteLike(id,userId);

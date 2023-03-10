@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.ObjectNotFoundException;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.Date;
@@ -68,6 +69,18 @@ public class UserDbStorage implements UserStorage {
                 user.getName(),
                 user.getBirthday(),
                 user.getId());
+        return user;
+    }
+
+    @Override
+    public User deleteUser(Integer id) {
+        User user = getUser(id);
+        final String sqlFilmGenreDelQuery = "DELETE FROM USER_FRIENDS WHERE USER_ID = ? AND FRIEND_ID = ?";
+        jdbcTemplate.update(sqlFilmGenreDelQuery, id, id);
+        final String sqlUserLikesDelQuery = "DELETE FROM USER_LIKES WHERE USER_ID = ?";
+        jdbcTemplate.update(sqlUserLikesDelQuery, id);
+        final String sqlQuery = "DELETE FROM USERS WHERE USER_ID = ?";
+        jdbcTemplate.update(sqlQuery, id);
         return user;
     }
 

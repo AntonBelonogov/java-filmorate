@@ -97,6 +97,18 @@ public class FilmDbStorage implements FilmStorage{
     }
 
     @Override
+    public Film deleteFilm(Integer film_id) {
+        Film film = getFilm(film_id);
+        final String sqlFilmGenreDelQuery = "DELETE FROM film_genre WHERE film_id = ?";
+        jdbcTemplate.update(sqlFilmGenreDelQuery, film_id);
+        final String sqlUserLikesDelQuery = "DELETE FROM USER_LIKES WHERE film_id = ?";
+        jdbcTemplate.update(sqlUserLikesDelQuery, film_id);
+        final String sqlQuery = "DELETE FROM film WHERE film_id = ?";
+        jdbcTemplate.update(sqlQuery, film_id);
+        return film;
+    }
+
+    @Override
     public Film getFilm(Integer filmId) {
         final String sqlQuery = "SELECT * FROM FILM WHERE FILM_ID = ?";
         return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToFilm, filmId);

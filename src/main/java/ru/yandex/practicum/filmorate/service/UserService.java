@@ -49,16 +49,23 @@ public class UserService {
         return userStorage.updateUser(user);
     }
 
+    public User deleteUser(Integer id) {
+        if (!userStorage.isUserExists(id)) {
+            throw new ObjectNotFoundException("User id not found to delete.");
+        }
+        return userStorage.deleteUser(id);
+    }
+
     public Boolean addFriend(Integer userId, Integer friendId) {
         if (!userStorage.isUserExists(userId) || !userStorage.isUserExists(friendId))  {
-            throw new ObjectNotFoundException("User id not found to update.");
+            throw new ObjectNotFoundException("User(-s) id not found to add friend.");
         }
         return userStorage.addFriend(userId, friendId);
     }
 
     public Boolean deleteFriend(Integer userId, Integer friendId) {
         if (!userStorage.isUserExists(userId) || !userStorage.isUserExists(friendId))  {
-            throw new ObjectNotFoundException("User id not found to update.");
+            throw new ObjectNotFoundException("User id not found to delete.");
         }
         return userStorage.deleteFriend(userId, friendId);
     }
