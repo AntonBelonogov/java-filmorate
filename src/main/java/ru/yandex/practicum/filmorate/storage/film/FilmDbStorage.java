@@ -16,13 +16,14 @@ import java.sql.SQLException;
 import java.util.*;
 
 @Component("filmDbStorage")
-public class FilmDbStorage implements FilmStorage{
+public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public FilmDbStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
     @Override
     public List<Film> getFilms() {
         final String sqlQuery = "SELECT " +
@@ -164,6 +165,7 @@ public class FilmDbStorage implements FilmStorage{
                 .name(resultSet.getString("NAME"))
                 .build();
     }
+
     private Genre mapRowToGenre(ResultSet resultSet, int rowNum) throws SQLException {
         return Genre.builder()
                 .id(resultSet.getInt("genre_id"))
