@@ -76,7 +76,7 @@ public class FilmDbStorage implements FilmStorage {
                 film.getDuration(),
                 film.getMpa().getId(),
                 film.getId());
-        if (film.getGenres() != null || film.getGenres().size() > 0) {
+        if (film.getGenres() != null && film.getGenres().size() > 0) {
             List<Genre> genreList = new ArrayList<>();
 
             final String sqlDeleteQuery = "DELETE FROM film_genre WHERE film_id = ?";
@@ -95,7 +95,7 @@ public class FilmDbStorage implements FilmStorage {
         } else {
             final String sqlDeleteQuery = "DELETE FROM film_genre WHERE film_id = ?";
             jdbcTemplate.update(sqlDeleteQuery, film.getId());
-            film.setGenres(null);
+            film.setGenres(Collections.EMPTY_LIST);
         }
         return film;
     }
