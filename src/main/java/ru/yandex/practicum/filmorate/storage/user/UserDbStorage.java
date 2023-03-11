@@ -73,15 +73,9 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public User deleteUser(Integer id) {
-        User user = getUser(id);
-        final String sqlFilmGenreDelQuery = "DELETE FROM USER_FRIENDS WHERE USER_ID = ? AND FRIEND_ID = ?";
-        jdbcTemplate.update(sqlFilmGenreDelQuery, id, id);
-        final String sqlUserLikesDelQuery = "DELETE FROM USER_LIKES WHERE USER_ID = ?";
-        jdbcTemplate.update(sqlUserLikesDelQuery, id);
+    public Boolean deleteUser(Integer id) {
         final String sqlQuery = "DELETE FROM USERS WHERE USER_ID = ?";
-        jdbcTemplate.update(sqlQuery, id);
-        return user;
+        return jdbcTemplate.update(sqlQuery, id) > 0;
     }
 
     @Override

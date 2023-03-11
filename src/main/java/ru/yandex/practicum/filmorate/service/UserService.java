@@ -49,7 +49,7 @@ public class UserService {
         return userStorage.updateUser(user);
     }
 
-    public User deleteUser(Integer id) {
+    public Boolean deleteUser(Integer id) {
         if (!userStorage.isUserExists(id)) {
             throw new ObjectNotFoundException("User id not found to delete.");
         }

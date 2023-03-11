@@ -11,7 +11,7 @@ public interface UserStorage {
     User getUser(Integer id);
     User addUser(User user);
     User updateUser(User user);
-    User deleteUser(Integer id);
+    Boolean deleteUser(Integer id);
     Boolean isUserExists(Integer id);
     List<User> getUserFriends(Integer userId);
     Boolean addFriend(Integer id, Integer friendId);

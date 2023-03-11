@@ -9,7 +9,7 @@ public interface FilmStorage {
     List<Film> getFilms();
     Film addFilm(Film film);
     Film updateFilm(Film film);
-    Film deleteFilm(Integer film_id);
+    Boolean deleteFilm(Integer film_id);
     Film getFilm(Integer filmId);
     Boolean isFilmExists(Integer id);
     Boolean sendLike(Integer filmId, Integer userId);

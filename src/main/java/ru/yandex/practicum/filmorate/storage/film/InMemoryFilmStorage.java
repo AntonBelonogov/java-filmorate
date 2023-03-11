@@ -42,7 +42,7 @@ public class InMemoryFilmStorage implements FilmStorage{
     }
 
     @Override
-    public Film deleteFilm(Integer film_id) {
+    public Boolean deleteFilm(Integer film_id) {
         return null;
     }
 
