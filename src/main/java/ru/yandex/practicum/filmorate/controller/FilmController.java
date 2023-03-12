@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -33,7 +32,7 @@ public class FilmController {
     public List<Film> getFilmCounted(@RequestParam(required = false, defaultValue = "10") Integer count) {
         if(count <= 0)
             throw new IllegalArgumentException("Параметер count не может быть меньше 0");
-        return filmService.getCountedFilmList(count);
+        return filmService.getMostPopularFilm(count);
     }
 
     @PostMapping
@@ -47,12 +46,17 @@ public class FilmController {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public Film userPostLike(@PathVariable Integer id, @PathVariable Integer userId) {
+    public Boolean userPostLike(@PathVariable Integer id, @PathVariable Integer userId) {
         return filmService.sendLike(id, userId);
     }
 
+    @DeleteMapping("/{id}")
+    public Boolean deleteFilm(@PathVariable Integer film_id) {
+        return filmService.deleteFilm(film_id);
+    }
+
     @DeleteMapping("/{id}/like/{userId}")
-    public Film userDeleteLike(@PathVariable Integer id, @PathVariable Integer userId) {
+    public Boolean userDeleteLike(@PathVariable Integer id, @PathVariable Integer userId) {
         return filmService.deleteLike(id,userId);
     }
 }

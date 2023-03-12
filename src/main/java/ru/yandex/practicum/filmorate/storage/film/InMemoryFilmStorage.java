@@ -1,11 +1,13 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -16,9 +18,9 @@ public class InMemoryFilmStorage implements FilmStorage{
     private final Map<Integer,Film> films = new HashMap<>();
 
     @Override
-    public Map<Integer, Film> getFilms() {
+    public List<Film> getFilms() {
         log.info("Получен запрос на получение списка фильмов: {}", films.values());
-        return films;
+        return new ArrayList<>(films.values());
     }
 
     @Override
@@ -40,10 +42,35 @@ public class InMemoryFilmStorage implements FilmStorage{
     }
 
     @Override
+    public Boolean deleteFilm(Integer film_id) {
+        return null;
+    }
+
+    @Override
     public Film getFilm(Integer filmId) {
         if(!films.containsKey(filmId)) {
             throw new ObjectNotFoundException("Нет такого фильма");
         }
         return films.get(filmId);
+    }
+
+    @Override
+    public Boolean isFilmExists(Integer id) {
+        return null;
+    }
+
+    @Override
+    public Boolean sendLike(Integer filmId, Integer userId) {
+        return null;
+    }
+
+    @Override
+    public Boolean deleteLike(Integer filmId, Integer userId) {
+        return null;
+    }
+
+    @Override
+    public List<Film> getMostPopularFilm(Integer limit) {
+        return null;
     }
 }

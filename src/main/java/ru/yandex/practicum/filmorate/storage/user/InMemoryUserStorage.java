@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,9 +15,9 @@ public class InMemoryUserStorage implements UserStorage{
     private final HashMap<Integer,User> users = new HashMap<>();
 
     @Override
-    public Map<Integer, User> getUsers() {
+    public List<User> getUsers() {
         log.info("Получен запрос на получение списка пользователей: {}", users.values());
-        return users;
+        return new ArrayList<>(users.values());
     }
 
     @Override
@@ -47,5 +47,35 @@ public class InMemoryUserStorage implements UserStorage{
         users.put(user.getId(), user);
         log.info("Пользователь обнавлен email: {}", user);
         return user;
+    }
+
+    @Override
+    public Boolean deleteUser(Integer id) {
+        return null;
+    }
+
+    @Override
+    public Boolean isUserExists(Integer id) {
+        return null;
+    }
+
+    @Override
+    public List<User> getUserFriends(Integer userId) {
+        return null;
+    }
+
+    @Override
+    public Boolean addFriend(Integer id, Integer friendId) {
+        return null;
+    }
+
+    @Override
+    public Boolean deleteFriend(Integer id, Integer friendId) {
+        return null;
+    }
+
+    @Override
+    public Collection<User> getMutualFriends(Integer id, Integer friendId) {
+        return null;
     }
 }
